@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+:root {
+  --black: #000000;
+  --off-white: #EDEDED;
+  --gray: #BABABA;
+  --red: #FF0000;
+}
+
+@theme inline {
+  --color-off-white: var(--off-white);
+  --color-black: var(--black);
+  --color-gray: var(--gray);
+  --color-red: var(--red);
+  --font-bebas: var(--font-bebas);
+  --font-inter: var(--font-inter);
+}
+
+body {
+  background-color: var(--off-white);
+  color: var(--black);
+}
