@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import Button from "../buttons";
 import { oswald, inter } from "../../fonts/fonts";
+import TixCard from "../tixcard";
 
 const navLinks = [
   { name: "LINEUP", href: "/lineup" },
@@ -7,6 +11,8 @@ const navLinks = [
 ]
 
 export default function Header() {
+  const [isTixOpen, setIsTixOpen] = useState(false);
+
   return(
     <header className={`${oswald.className} px-6 sticky top-0 z-50 justify-between items-center flex flex-row w-full h-20 bg-off-white cursor-default`}>
 
@@ -32,7 +38,8 @@ export default function Header() {
         </div>
         <Button className="cursor-default bg-black text-off-white hover:bg-gray-800">TIX</Button>
       </div>
-
+      <TixCard isOpen={isTixOpen} onClose={() => setIsTixOpen(false)} />
     </header>
+    
   );
 }
