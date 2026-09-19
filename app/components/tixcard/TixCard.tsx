@@ -11,7 +11,7 @@ interface TixCardProps {
 
 const TICKET_PRICE = 25;
 
-const paymentOptions = ["CARD", "PAYPAL", "CASH AT DOOR"];
+const paymentOptions = ["CARD", "PAYPAL", "GCASH"];
 
 export default function TixCard({ isOpen, onClose }: TixCardProps) {
   const [step, setStep] = useState<"form" | "receipt">("form");
@@ -20,6 +20,9 @@ export default function TixCard({ isOpen, onClose }: TixCardProps) {
   const [email, setEmail] = useState("");
   const [payment, setPayment] = useState(paymentOptions[0]);
   const [orderId, setOrderId] = useState("");
+  const [codes, setCodes] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   if (!isOpen) return null;
 
@@ -32,12 +35,41 @@ export default function TixCard({ isOpen, onClose }: TixCardProps) {
     setName("");
     setEmail("");
     setPayment(paymentOptions[0]);
+    setCodes([]);
+    setError("");
   };
 
-  const handleConfirm = (e: React.FormEvent) => {
+  const handleConfirm = async (e: React.FormEvent) => {
     e.preventDefault();
-    setOrderId(`VF-${Math.floor(100000 + Math.random() * 900000)}`);
-    setStep("receipt");
+    setIsSubmitting(true);
+    setError("");
+
+    try {
+      // --- MOCK PAYMENT STEP ---
+      // No real charge happens here, just a fake delay for feel.
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      // --- END MOCK PAYMENT STEP ---
+
+      const res = await fetch("/api/purchase-tickets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, quantity, payment }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to complete purchase");
+      }
+
+      const data = await res.json();
+      setOrderId(data.orderId);
+      setCodes(data.codes);
+      setStep("receipt");
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -138,12 +170,15 @@ export default function TixCard({ isOpen, onClose }: TixCardProps) {
                 <span className="text-lg">${total}</span>
               </div>
 
+              {error && <p className="text-red-600 text-sm">{error}</p>}
+
               <Button
                 size="lg"
                 type="submit"
-                className="bg-black text-off-white hover:bg-gray-800"
+                disabled={isSubmitting}
+                className="bg-black text-off-white hover:bg-gray-800 disabled:opacity-50"
               >
-                CONFIRM
+                {isSubmitting ? "PROCESSING..." : "CONFIRM"}
               </Button>
             </form>
           </>
@@ -167,10 +202,6 @@ export default function TixCard({ isOpen, onClose }: TixCardProps) {
                 <span>{email}</span>
               </div>
               <div className="flex justify-between">
-                <span className="font-bold">QUANTITY</span>
-                <span>{quantity}</span>
-              </div>
-              <div className="flex justify-between">
                 <span className="font-bold">PAYMENT</span>
                 <span>{payment}</span>
               </div>
@@ -180,8 +211,24 @@ export default function TixCard({ isOpen, onClose }: TixCardProps) {
               </div>
             </div>
 
+            <div className="flex flex-col gap-2">
+              <span className={`${inter.className} text-sm font-bold`}>
+                YOUR TICKET CODES — SHOW AT THE GATE
+              </span>
+              <div className="flex flex-col gap-1">
+                {codes.map((code) => (
+                  <span
+                    key={code}
+                    className={`${oswald.className} text-2xl border border-black px-3 py-2 text-center`}
+                  >
+                    {code}
+                  </span>
+                ))}
+              </div>
+            </div>
+
             <p className={`${inter.className} text-xs`}>
-              a confirmation has been sent to {email}. see you at the show.
+              a copy of these codes has been sent to {email}. see you at the show.
             </p>
 
             <Button
