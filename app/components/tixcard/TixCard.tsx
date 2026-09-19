@@ -60,7 +60,7 @@ export default function TixCard({ isOpen, onClose }: TixCardProps) {
         {step === "form" ? (
           <>
             <h2 className={`${oswald.className} font-bold text-4xl`}>
-              GET TIX
+              TIX
             </h2>
 
             <form
