@@ -3,7 +3,6 @@ import { oswald, inter } from "../../fonts/fonts";
 
 const navLinks = [
   { name: "LINEUP", href: "/lineup" },
-  { name: "INFO", href: "/info" },
   { name: "ABOUT US", href: "/about" },
 ]
 
