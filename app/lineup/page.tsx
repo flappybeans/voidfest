@@ -63,11 +63,16 @@ const lineupSections = [
 export default function LineupPage() {
   return (
     <section className="flex flex-col justify-center items-center gap-6 px-6">
-      <h1 className={`${oswald.className} font-bold text-4xl`}>LINEUP</h1>
+      <h1 className={`${oswald.className} font-bold text-3xl sm:text-4xl`}>
+        LINEUP
+      </h1>
 
       {lineupSections.map((section) => (
-        <div key={section.label} className="flex flex-col items-center gap-6 w-full">
-          <div className="grid grid-cols-3 gap-10">
+        <div
+          key={section.label}
+          className="flex flex-col items-center gap-6 w-full"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 w-full max-w-4xl place-items-center sm:place-items-start">
             {section.bands.map((band) => (
               <BandInfoCard
                 key={band.name}
@@ -78,17 +83,21 @@ export default function LineupPage() {
             ))}
           </div>
 
-          <div className="min-w-full min-h-14 bg-black flex justify-center items-center">
-            <h1 className={`${oswald.className} text-off-white font-bold text-4xl`}>
+          <div className="min-w-full py-4 px-4 bg-black flex justify-center items-center">
+            <h1
+              className={`${oswald.className} text-off-white font-bold text-xl sm:text-2xl md:text-4xl text-center`}
+            >
               {section.label}
             </h1>
           </div>
         </div>
       ))}
 
-      <h1 className={`${oswald.className} font-bold text-4xl`}>ENCORE</h1>
+      <h1 className={`${oswald.className} font-bold text-3xl sm:text-4xl`}>
+        ENCORE
+      </h1>
 
-      <div className="flex">
+      <div className="flex justify-center w-full">
         {bands.slice(9, 10).map((band) => (
           <BandInfoCard
             key={band.name}

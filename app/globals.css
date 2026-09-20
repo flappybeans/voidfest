@@ -16,6 +16,12 @@
   --font-inter: var(--font-inter);
 }
 
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 body {
   background-color: var(--off-white);
   color: var(--black);

@@ -57,11 +57,11 @@ export default function HireCard({ isOpen, onClose }: HireCardProps) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 px-6"
+      className="fixed inset-0 bg-black/60 flex justify-center items-start sm:items-center z-50 px-4 sm:px-6 py-10 overflow-y-auto"
       onClick={handleClose}
     >
       <div
-        className="bg-off-white p-8 max-w-md w-full flex flex-col gap-6 relative"
+        className="bg-off-white p-6 sm:p-8 max-w-md w-full flex flex-col gap-6 relative my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <button
